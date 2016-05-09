@@ -1,6 +1,7 @@
 import hmm
 import string, time
 import numpy as np
+import pylab as pl
 
 
 if __name__ == '__main__':
@@ -34,7 +35,7 @@ if __name__ == '__main__':
 
   begin = time.time()
   print('begin =', begin)
-  hmm.baum_welch(A, B, start, O, 500, eps=1e-20, verbose=True)
+  hmm.baum_welch(A, B, start, O, 1000, eps=1e-20, verbose=True)
   print('cost =', time.time() - begin)
 
   print(A)
