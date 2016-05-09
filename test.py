@@ -4,8 +4,7 @@ import numpy as np
 
 
 if __name__ == '__main__':
-  with open('corpus.low', 'r') as fp:
-    s = fp.read()
+  corpus = ['corpus.low']
 
   alpha = string.ascii_lowercase
   space = ' '
@@ -14,7 +13,12 @@ if __name__ == '__main__':
   dic = dict(zip(vocab, range(len(vocab))))
   inv_dic = {v:k for k,v in dic.items()}
 
-  O = [np.asarray([dic[_] for _ in s if _ in dic], dtype='int32')]
+  O = []
+  for f in corpus:
+    with open(f, 'r') as fp:
+      s = fp.read().strip()
+    O.append(np.asarray([dic[_] for _ in s if _ in dic], dtype='int32'))
+
   n_A = 2
   n_B = len(dic)
 
@@ -30,7 +34,7 @@ if __name__ == '__main__':
 
   begin = time.time()
   print('begin =', begin)
-  hmm.baum_welch(A, B, start, O, 1000, eps=1e-20, verbose=True)
+  hmm.baum_welch(A, B, start, O, 500, eps=1e-20, verbose=True)
   print('cost =', time.time() - begin)
 
   print(A)
