@@ -23,9 +23,9 @@ if __name__ == '__main__':
   n_A = 2
   n_B = len(dic)
 
-  A = np.random.rand(n_A,n_A)
+  A = np.random.rand(n_A,n_A) + 3
   A /= A.sum(axis=1)[:,np.newaxis]
-  B = np.random.rand(n_A,n_B)
+  B = np.random.rand(n_A,n_B) + 3
   B /= B.sum(axis=1)[:,np.newaxis]
   start = np.random.rand(n_A)
   start /= start.sum()
@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
   begin = time.time()
   print('begin =', begin)
-  hmm.baum_welch(A, B, start, O, 1000, eps=1e-20, verbose=True)
+  hmm.baum_welch(A, B, start, O, 5000, eps=1e-10, verbose=False)
   print('cost =', time.time() - begin)
 
   print(A)
@@ -44,3 +44,13 @@ if __name__ == '__main__':
   print('emission prob:')  
   for i in range(n_B):
     print(inv_dic[i], B[:,i])
+
+  pl.style.use('ggplot')
+  fig, ax = pl.subplots(2,1)
+  pl.setp(ax, xticks=range(len(vocab)), 
+      xticklabels=vocab,
+      xlim=(-1, len(vocab)),
+      ylim=(0,1))
+  ax[0].stem(range(len(vocab)), B[0], markerfmt=' ')
+  ax[1].stem(range(len(vocab)), B[1], markerfmt=' ')
+  pl.show()
